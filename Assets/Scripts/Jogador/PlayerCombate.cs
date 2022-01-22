@@ -7,6 +7,7 @@ public class PlayerCombate : MonoBehaviour
     public Animator animador;
     Collider colisorEspada;
     CharacterController controlePersonagem;
+    PlayerGerenciador playerGerenciador;
     
     // Start is called before the first frame update
     void Start()
@@ -14,6 +15,7 @@ public class PlayerCombate : MonoBehaviour
         colisorEspada = GetComponentInChildren<Collider>();
         colisorEspada.enabled = false;
         controlePersonagem = GetComponentInParent<CharacterController>();
+        playerGerenciador = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGerenciador>();
     }
 
     // Update is called once per frame
@@ -25,10 +27,22 @@ public class PlayerCombate : MonoBehaviour
         }
         if (Input.GetButtonDown("Fire2"))
         {
-
+            animador.SetBool("bloqueando", true);
+            desativarMovimento();
         }
+        if (Input.GetButtonUp("Fire2"))
+        {
+            animador.SetBool("bloqueando", false);
+            playerGerenciador.vulneravel = true;
+            ativarMovimento();
+        }
+        Debug.Log(playerGerenciador);
     }
     //Eventos de animação
+    public void defender()
+    {
+        playerGerenciador.vulneravel = false;
+    }
     public void ativarDano()
     {
         colisorEspada.enabled = true;
@@ -48,10 +62,10 @@ public class PlayerCombate : MonoBehaviour
         controlePersonagem.enabled = true;
     }
 
-    public void Aparar()
-    {
+    //public void Aparar()
+    //{
 
-    }
+    //}
     //private void OnTriggerEnter(Collider outro)
     //{
 

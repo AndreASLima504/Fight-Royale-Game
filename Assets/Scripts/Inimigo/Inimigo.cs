@@ -118,7 +118,7 @@ public class Inimigo : MonoBehaviour
     public void tomarDano(int danoTomado)
         {
         vida -= danoTomado;
-        animator.SetTrigger("Dano");
+        //animator.SetTrigger("Dano");
         //Debug.Log(vida);
         Debug.Log("Hitou");
     }

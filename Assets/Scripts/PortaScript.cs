@@ -14,7 +14,7 @@ public class PortaScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGerenciador>();
         colisao = GetComponent<Collider>();
-        Debug.Log(colisao, player);
+        //Debug.Log(colisao, player);
     }
 
     // Update is called once per frame

@@ -6,6 +6,8 @@ public class InimigoAtaque : MonoBehaviour
 {
     PlayerGerenciador gerenciadorPlayer;
     Inimigo inimigo;
+    public Animator animador;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +18,15 @@ public class InimigoAtaque : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //Debug.Log(gerenciadorPlayer);
     }
     public void atacar(int danoInfligido)
     {
-        if()
+        if(gerenciadorPlayer.vulneravel == true)
         gerenciadorPlayer.tomarDano(danoInfligido);
+        else
+        {
+            animador.SetTrigger("Dano");
+        }
     }
 }

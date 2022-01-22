@@ -17,6 +17,8 @@ public class PlayerGerenciador : MonoBehaviour
     public bool temChave;
     private Slider barraDeVida;
     public GameObject telaFimDeJogo;
+    public bool vulneravel;
+    public Animator esqueletoAnim;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,7 @@ public class PlayerGerenciador : MonoBehaviour
         vida = vidaMax;
         temChave = false;
         barraDeVida = GameObject.FindGameObjectWithTag("BarraDeVida").GetComponent<Slider>();
+        vulneravel = true;
     }
 
     // Update is called once per frame
@@ -48,6 +51,7 @@ public class PlayerGerenciador : MonoBehaviour
     }
     public void tomarDano(int danoTomado)
     {
+        if(vulneravel == true)
         vida -= danoTomado;
     }
 }

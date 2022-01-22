@@ -57,10 +57,11 @@ public class SimpleCollectibleScript : MonoBehaviour {
 		}
 		if (CollectibleType == CollectibleTypes.Vida) {
 
-			if(player.vida < player.vidaMax - 4)
+			if(player.vida < player.vidaMax)
             {
 			player.vida += 4;
-            }else if(player.vida >= player.vidaMax)
+            }
+            if(player.vida > player.vidaMax)
             {
 				player.vida = player.vidaMax;
             }
