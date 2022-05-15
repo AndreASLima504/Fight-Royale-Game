@@ -104,7 +104,6 @@ public class Inimigo : MonoBehaviour
         if(other.gameObject.tag == "Espada")
         {
             tomarDano(player.danoEspada);
-            Debug.Log(player.danoEspada);
         }
     }
 
@@ -118,8 +117,6 @@ public class Inimigo : MonoBehaviour
     public void tomarDano(int danoTomado)
         {
         vida -= danoTomado;
-        //animator.SetTrigger("Dano");
-        //Debug.Log(vida);
-        Debug.Log("Hitou");
+        animator.SetTrigger("Dano");
     }
 }

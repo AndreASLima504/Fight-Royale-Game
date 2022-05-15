@@ -28,7 +28,7 @@ public class PortaScript : MonoBehaviour
 
     void abrir()
     {
-        colisao.enabled = false;
+            GameObject.Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision other)

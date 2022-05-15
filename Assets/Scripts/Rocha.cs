@@ -8,15 +8,12 @@ public class Rocha : MonoBehaviour
     Rigidbody rigidbody;
     private Transform jogador;
     PlayerGerenciador player;
-    public GameObject cleiton;
 
     // Start is called before the first frame update
     void Start()
     {
         colisor = GetComponent<Collider>();
-        cleiton = GameObject.FindGameObjectWithTag("Player");
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGerenciador>();
-        rigidbody = GameObject.FindGameObjectWithTag("Rocha").GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
         jogador = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         rigidbody.isKinematic = true;
     }
@@ -35,7 +32,8 @@ public class Rocha : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            player.mortePlayer(cleiton);
+            player = other.GetComponent<PlayerGerenciador>();
+            player.mortePlayer();
         }
     }
 }

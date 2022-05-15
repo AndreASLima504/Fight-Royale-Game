@@ -10,6 +10,11 @@ public class EventManager : MonoBehaviour
 
     public void FecharJogo()
     {
-        Application.Quit();
+        SceneManager.LoadScene(0);
     }
+
+    //public void carregarFase()
+    //{
+    //    SceneManager.LoadScene()
+    //}
 }

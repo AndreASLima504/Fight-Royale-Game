@@ -6,8 +6,12 @@ using System.Threading;
 
 public class PlayerController : MonoBehaviour
 {
+
     public float velocidadeDeMovimento;
     public float forcaDoPulo;
+    public bool noChao;
+    public float tamanhoChecagemChao;
+
     //public Rigidbody rigidbody;
     public Transform checagemChao;
     public LayerMask chaoLayer;
@@ -17,8 +21,10 @@ public class PlayerController : MonoBehaviour
     public CharacterController controlePersonagem;
     private Vector3 direcaoMovimento;
     public float gravidadeEscala;
-    
-    
+
+    //Agregando combate do player
+    //PlayerCombate gerenciadorCombate;
+
     public Animator animador;
     public Transform modelo;
     //private bool morto = false;
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
         gerenciador = GetComponent<PlayerGerenciador>();
         controlePersonagem = GetComponent<CharacterController>();
         colisorEspada = GetComponent<Collider>();
+        //gerenciadorCombate = GetComponentInChildren<PlayerCombate>();
         colisorEspada.enabled = false;
         morto = false;
     }
@@ -47,26 +54,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        
-            //Movimento utilizando Character Controller
-            direcaoMovimento = new Vector3(Input.GetAxis("Horizontal") * velocidadeDeMovimento, controlePersonagem.velocity.y, controlePersonagem.velocity.z);
-            if (Input.GetButtonUp("Horizontal"))
-            {
-                direcaoMovimento.x = direcaoMovimento.x * 0.1f;
-            }
-            if (Input.GetButtonDown("Vertical"))
-            {
-                animador.SetFloat("direcaoStrafe", direcaoMovimento.z);
-                animador.SetBool("strafando", true);
-            }
-            if (Input.GetButtonUp("Vertical"))
-            {
-                animador.SetBool("strafando", false);
-            }
-            
+        float xDirection = Input.GetAxis("Horizontal");
 
-                //Pulo
-                bool noChao = Physics.CheckSphere(checagemChao.position, 0.20f, chaoLayer);
+        Vector3 movement = transform.right * xDirection;
+        controlePersonagem.Move(movement * velocidadeDeMovimento * Time.deltaTime);
+
+
+
+        //Pulo
+        noChao = Physics.CheckSphere(checagemChao.position, tamanhoChecagemChao, chaoLayer);
             if (Input.GetButtonDown("Jump") && noChao)
             {
                 //direcaoMovimento = new Vector3(controlePersonagem.velocity.x, forcaDoPulo, controlePersonagem.velocity.z);
@@ -78,12 +74,25 @@ public class PlayerController : MonoBehaviour
                 direcaoMovimento.y = direcaoMovimento.y * 0.5f;
             }
 
+        //Gravidade
+        direcaoMovimento.y += (Physics.gravity.y * gravidadeEscala) * Time.deltaTime;
+        controlePersonagem.Move(direcaoMovimento*Time.deltaTime);
+        if (noChao && direcaoMovimento.y < 0)
+            direcaoMovimento.y = -2f;
+
             //Animações
             animador.SetFloat("Velocidade", Mathf.Abs(Input.GetAxis("Horizontal")));
             animador.SetBool("noChao", noChao);
             animador.SetFloat("VelocidadeVertical", Mathf.Abs(controlePersonagem.velocity.y));
-      
-            if(Physics.CheckSphere(checagemChao.position, 0.20f, instakill))
+      if(Input.GetButtonDown("Horizontal"))
+        {
+            animador.SetBool("andando", true);
+            if (Input.GetButtonUp("Horizontal"))
+            {
+                animador.SetBool("andando", false);
+            }
+        }
+            if(Physics.CheckSphere(checagemChao.position, tamanhoChecagemChao, instakill))
             {
                 gerenciador.tomarDano(gerenciador.vidaMax);
             }
@@ -105,14 +114,28 @@ public class PlayerController : MonoBehaviour
 
 
         
-        //Gravidade
-        direcaoMovimento.y += (Physics.gravity.y * gravidadeEscala) * Time.deltaTime;
-        controlePersonagem.Move(direcaoMovimento*Time.deltaTime);
 
 
 
+        //Movimento utilizando Character Controller método 1
+        //direcaoMovimento = new Vector3(Input.GetAxis("Horizontal") * velocidadeDeMovimento, controlePersonagem.velocity.y, controlePersonagem.velocity.z);
+        //if (Input.GetButtonUp("Horizontal"))
+        //{
+        //    direcaoMovimento.x = direcaoMovimento.x * 0.1f;
+        //}
 
-        //direcaoDeMovimento = new Vector3(Input.GetAxis("Horizontal") * velocidadeDeMovimento, player.velocity.y, player.velocity.z);
+
+        //Strafe descartado
+        //if (Input.GetButtonDown("Vertical"))
+        //{
+        //    animador.SetFloat("direcaoStrafe", direcaoMovimento.z);
+        //    animador.SetBool("strafando", true);
+        //}
+        //if (Input.GetButtonUp("Vertical"))
+        //{
+        //    animador.SetBool("strafando", false);
+        //}
+
     }
 
     

@@ -8,6 +8,8 @@ public class PlayerCombate : MonoBehaviour
     Collider colisorEspada;
     CharacterController controlePersonagem;
     PlayerGerenciador playerGerenciador;
+    PlayerController playerController;
+    public AudioSource ataque;
     
     // Start is called before the first frame update
     void Start()
@@ -16,27 +18,32 @@ public class PlayerCombate : MonoBehaviour
         colisorEspada.enabled = false;
         controlePersonagem = GetComponentInParent<CharacterController>();
         playerGerenciador = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGerenciador>();
+        playerController = GetComponentInParent<PlayerController>();
+               
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            animador.SetTrigger("Atacar");
+        if (playerController.noChao)
+        { 
+            if (Input.GetButtonDown("Fire1"))
+            {
+                animador.SetTrigger("Atacar");
+
+            }
+            if (Input.GetButtonDown("Fire2"))
+            {
+                animador.SetBool("bloqueando", true);
+                desativarMovimento();
+            }
+            if (Input.GetButtonUp("Fire2"))
+            {
+                animador.SetBool("bloqueando", false);
+                playerGerenciador.vulneravel = true;
+                ativarMovimento();
+            }
         }
-        if (Input.GetButtonDown("Fire2"))
-        {
-            animador.SetBool("bloqueando", true);
-            desativarMovimento();
-        }
-        if (Input.GetButtonUp("Fire2"))
-        {
-            animador.SetBool("bloqueando", false);
-            playerGerenciador.vulneravel = true;
-            ativarMovimento();
-        }
-        Debug.Log(playerGerenciador);
     }
     //Eventos de animação
     public void defender()
